@@ -1,0 +1,61 @@
+import React, { Component } from 'react'
+import axios from 'axios'
+
+class PostForm extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             userId: " ",
+             title: ' ',
+             body: ' '
+        }
+    }
+
+    changeValue = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
+    submitted =(event) => {
+        event.preventDefault()  //Prevents automatic refresh of webpage when the submit button is clicked
+        console.log(this.state);
+        axios.post("https://jsonplaceholder.typicode.com/posts", this.state)
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        
+    }
+    
+    render() {
+        const {userId, title, body}= this.state
+        return (
+            <div>
+                <form onSubmit={this.submitted}>
+                    <div>
+                        <label>User Id :</label>
+                        <input type="text" name="userId" value={userId} onChange={this.changeValue}/>
+                    </div>
+                    <br/>                    
+                    <div>
+                        <label>Title :</label>
+                        <input type="text" name="title"  value={title} onChange={this.changeValue}/>
+                    </div>
+                    <br/>
+                    <div>
+                        <label>Body :</label>
+                        <input type="text" name="body" value={body} onChange={this.changeValue}/>
+                    </div>
+                    <br/>
+                    <button type="submit">Submit</button>
+                </form>                
+            </div>
+        )
+    }
+}
+
+export default PostForm
